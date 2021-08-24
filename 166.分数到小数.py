@@ -8,30 +8,44 @@
 import decimal as dec
 class Solution:
     def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        #可整除
         if numerator % denominator==0:
             return str(numerator//denominator)
 
-        dec.getcontext().prec = 2000
-
-
-        ans = str(dec.Decimal(numerator)/dec.Decimal(denominator))
-        start = ans.find('.')
-
-        #循环节长度
-        K = 1
-        remain = 10
-        while True:
-            if remain == 0:
-                return ans[:start+K]
-            if remain % denominator == 1:
-                break
-            else:
-                remain = (remain % denominator) * 10
-            K += 1
+        #判断符号
+        sign = ''
+        if numerator < 0 and denominator > 0 or\
+            numerator > 0 and denominator < 0:
+            sign = '-'
+        numerator = abs(numerator)
+        denominator = abs(denominator)
         
-        for i in range(start+1, len(ans)):
-            if ans[i:i+K] == ans[i+K:i+2*K]:
-                return f'{ans[:i]}({ans[i:i+K]})'
+
+        front = str(numerator//denominator)+'.'
+        ans = ''
+        remain = numerator % denominator
+        remain_save = {}
+        p = 0
+
+        while remain not in remain_save:
+            remain_save[remain] = p
+            remain *= 10
+            while remain < denominator:
+                remain *= 10
+                ans += '0'
+                p += 1
+            
+            ans += str(remain//denominator)
+            p += 1
+            remain = remain % denominator
+            #不循环
+            if remain == 0:
+                return sign + front + ans
+
+        #循环加括号
+        p = remain_save[remain]
+        return sign + front + ans[:p] + '(' + ans[p:] + ')' 
+
 
 # @lc code=end
 
