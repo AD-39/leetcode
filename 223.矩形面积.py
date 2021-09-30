@@ -16,19 +16,10 @@ class Solution:
         y = sorted([ay1,ay2,by1,by2])
 
         if not (sorted([ax1,ax2]) == x[0:2] or sorted([ax1,ax2]) == x[2:]\
-            or sorted([ay1,ay2]) == y[0:2] or sorted([ay1,ay2]) == y[2:]):
+            or sorted([ay1,ay2]) == y0[0:2] or sorted([ay1,ay2]) == y[2:]):
             s -= get_s(x[1],x[2],y[1],y[2])
 
         return s
 
 # @lc code=end
-sol = Solution()
-sol.computeArea(-5,
--2,
-5,
-1,
--3,
--3,
-3,
-3)
 
